@@ -43,15 +43,16 @@ def get_url():
         pool.join()
         print("Xray Scan End~")
 
-
 # 报告
 def do_scan(targeturl, schedule, schedules):
-    scan_command="C:/Users/Administrator/Desktop/xray_windows_amd64.exe.lnk webscan --basic-crawler {} --html-output {}.html".format(targeturl, time.time())
-    result, error = subprocess.Popen(scan_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
-    #如果想看输出内容的话，就取消下面的注释
-    #print(result.decode("GB2312"), error)
     print("当前正在扫描第{}个任务，还剩{}条任务，程序总共执行了{:.2f}%".format(schedule, schedules - schedule, schedule / schedules * 100))
-
+    scan_command="C:/Users/Administrator/Desktop/xray_windows_amd64.exe.lnk webscan --basic-crawler {} --html-output {}.html".format(targeturl, time.strftime("%Y%m%d%H%M%S", time.localtime()))
+    result, error = subprocess.Popen(scan_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
+    #如果想看输出内容的话，就取消下面的注释W
+    # print(result.decode("GB2312"))
+    # print("报错:" + error)
+    if error:
+        print("报错:" + error)
 
 if __name__ == '__main__':
     get_url()
